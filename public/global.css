@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap");
+
+/* =========================
+   ROOT
+========================= */
+
+:root {
+  --bg-main: #020f0b;
+
+  --bg-card: rgba(6, 26, 18, 0.88);
+
+  --bg-input: #0d261b;
+
+  --primary: #00ff88;
+  --primary-dark: #018f4c;
+
+  --text-main: #f0fff8;
+  --text-muted: #8fb8a3;
+
+  --border: rgba(0, 255, 136, 0.18);
+
+  --shadow: rgba(0, 255, 136, 0.16);
+
+  --radius-lg: 8px;
+  --radius-md: 4px;
+
+  --transition: 0.3s ease;
+}
+
+/* =========================
+   RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+
+  font-family: "Sora", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(0, 255, 136, 0.08),
+      transparent 35%
+    ),
+
+    linear-gradient(
+      135deg,
+      #020f0b,
+      #03150f
+    );
+
+  color: var(--text-main);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-dark);
+}
+
+::-webkit-scrollbar-track {
+  background: #02130c;
+}
+
+/* =========================
+   AUTOFILL
+========================= */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow:
+    0 0 0px 1000px rgba(0, 255, 136, 0.01) inset;
+
+  -webkit-text-fill-color: white;
+
+  transition:
+    background-color 5000s ease-in-out 0s;
+}

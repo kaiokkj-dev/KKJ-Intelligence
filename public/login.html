@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | KKJ Intelligence</title>
+  <link rel="icon" type="image/png" href="/img1.png" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./global.css">
+<link rel="stylesheet" href="./auth.css">
+</head>
+<body class="auth-page">
+  <main class="auth-wrapper">
+    <div id="error-toast" class="toast hidden">
+      <span class="toast-icon">❌</span>
+      <span class="toast-text"></span>
+    </div>
+
+    <div class="top-area">
+          <strong>KKJ</strong>
+    <span>Intelligence</span>
+      <p>Entre na sua conta para continuar</p>
+    </div>
+
+    <section class="auth-container">
+      <h2>Login</h2>
+      <p class="auth-subtitle">
+        Digite seu e-mail e senha para acessar sua conta
+      </p>
+
+      <form id="loginForm">
+        <label for="email">E-mail</label>
+        <div class="input-box">
+          <i data-lucide="mail"></i>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Digite seu e-mail"
+            required
+          />
+        </div>
+        <label for="password">Senha</label>
+        <div class="input-box">
+          <i data-lucide="lock"></i>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Digite sua senha"
+            minlength="6"
+            required
+          />
+        <span class="toggle-password" onclick="togglePassword('password', this)">
+          <i data-lucide="eye"></i>
+        </span>
+        </div>
+        <div class="actions-row">
+          <button type="submit" class="login-btn">Entrar</button>
+          <a href="/auth/google" class="google-btn">
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+            />
+          </a>
+        </div>
+      </form>
+    </section>
+    <p class="auth-link">
+      AINDA NÃO TEM CONTA?
+      <a href="./register.html">CRIAR CONTA</a>
+    </p>
+  </main>
+<script>
+  lucide.createIcons();
+  function togglePassword(inputId, element) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+      input.type = "text";
+      element.innerHTML = '<i data-lucide="eye-off"></i>';
+    } else {
+      input.type = "password";
+      element.innerHTML = '<i data-lucide="eye"></i>';
+    }
+    lucide.createIcons();
+  }
+  function showToast(message, success = true) {
+    const toast = document.getElementById("error-toast");
+    const text = toast.querySelector(".toast-text");
+    const icon = toast.querySelector(".toast-icon");
+    text.textContent = message;
+    icon.textContent = success ? "✅" : "❌";
+    toast.classList.remove("hidden");
+    setTimeout(() => {
+      toast.classList.add("hidden");
+    }, 3000);
+  }
+  const form = document.getElementById("loginForm");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) {
+        showToast(data.message, false);
+        return;
+      }
+      localStorage.setItem("token", data.token);
+      showToast("Login realizado com sucesso", true);
+      setTimeout(() => {
+        window.location.href = "/dashboard.html";
+      }, 1200);
+    } catch (err) {
+      showToast("Erro interno do servidor", false);
+    }
+  });
+</script>
+</body>
+</html>

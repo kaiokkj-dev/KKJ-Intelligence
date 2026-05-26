@@ -11,28 +11,34 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails[0].value;
+        const email = profile.emails?.[0]?.value;
+        const name = profile.displayName;
+
+        if (!email) {
+          return done(new Error("Email do Google não encontrado"));
+        }
 
         const { data: existingUser, error: findError } = await db
           .from("users")
           .select("*")
           .eq("email", email)
-          .single();
+          .maybeSingle();
+
+        if (findError) {
+          return done(findError);
+        }
 
         if (existingUser) {
           return done(null, existingUser);
-        }
-
-        if (findError && findError.code !== "PGRST116") {
-          return done(findError);
         }
 
         const { data: newUser, error: insertError } = await db
           .from("users")
           .insert([
             {
+              name,
               email,
-              password: "google",
+              password: null,
             },
           ])
           .select()

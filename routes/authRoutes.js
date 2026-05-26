@@ -3,38 +3,52 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const passport = require("passport");
 
-// PÁGINAS
-router.get("/login", (req, res) => {
-  res.render("login", { query: req.query });
-});
-router.get("/register", (req, res) => {
-  res.render("register", { query: req.query });
-});
-// LOGIN NORMAL
-router.post("/login", authController.login);
+// ========================
+// AUTH API
+// ========================
+
 // REGISTER
 router.post("/register", authController.register);
+
+// LOGIN
+router.post("/login", authController.login);
+
 // LOGOUT
 router.get("/logout", authController.logout);
+
 // ========================
-// LOGIN COM GOOGLE
+// GOOGLE LOGIN
 // ========================
+
 // iniciar login google
 router.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
 );
+
 // callback do google
 router.get(
-  "/auth/google/callback",
+  "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/login",
+    failureRedirect: "/api/auth/login-failed",
   }),
   (req, res) => {
-    req.session.userId = req.user.id;
-    req.session.userEmail = req.user.email;
-    res.redirect("/dashboard?success=Login com Google realizado");
+    res.json({
+      success: true,
+      message: "Login com Google realizado",
+      user: req.user,
+    });
   }
 );
+
+// rota de erro login google
+router.get("/login-failed", (req, res) => {
+  res.status(401).json({
+    success: false,
+    message: "Falha no login",
+  });
+});
 
 module.exports = router;
