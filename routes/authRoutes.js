@@ -32,23 +32,10 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/api/auth/login-failed",
+    failureRedirect: "/login.html",
   }),
   (req, res) => {
-    res.json({
-      success: true,
-      message: "Login com Google realizado",
-      user: req.user,
-    });
+    res.redirect("/dashboard.html");
   }
 );
-
-// rota de erro login google
-router.get("/login-failed", (req, res) => {
-  res.status(401).json({
-    success: false,
-    message: "Falha no login",
-  });
-});
-
 module.exports = router;
