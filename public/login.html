@@ -96,8 +96,8 @@
       toast.classList.add("hidden");
     }, 3000);
   }
-  const form = document.getElementById("loginForm");
-  form.addEventListener("submit", async (e) => {
+  const loginForm = document.getElementById("loginForm");
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -120,7 +120,7 @@
       localStorage.setItem("token", data.token);
       showToast("Login realizado com sucesso", true);
       setTimeout(() => {
-        window.location.href = "/index.html";
+        window.location.reload();
       }, 1200);
     } catch (err) {
       showToast("Erro interno do servidor", false);

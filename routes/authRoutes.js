@@ -2,10 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 const passport = require("passport");
-
-// ========================
-// AUTH API
-// ========================
+const jwt = require("jsonwebtoken");
 
 // REGISTER
 router.post("/register", authController.register);
@@ -16,11 +13,7 @@ router.post("/login", authController.login);
 // LOGOUT
 router.get("/logout", authController.logout);
 
-// ========================
-// GOOGLE LOGIN
-// ========================
-
-// iniciar login google
+// INICIAR LOGIN GOOGLE
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -28,14 +21,32 @@ router.get(
   })
 );
 
-// callback do google
+// CALLBACK GOOGLE
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/login.html",
+    failureRedirect: "/",
   }),
   (req, res) => {
-    res.redirect("/dashboard.html");
+    const token = jwt.sign(
+      {
+        id: req.user.id,
+        email: req.user.email,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    const user = encodeURIComponent(
+      JSON.stringify({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+      })
+    );
+
+    res.redirect(`/?token=${token}&user=${user}`);
   }
 );
+
 module.exports = router;

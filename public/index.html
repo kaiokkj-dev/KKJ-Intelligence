@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Chat | KKJ Intelligence</title>
+  <title>KKJ Intelligence</title>
   <link rel="icon" type="image/png" href="/img3.png" />
   <script src="https://unpkg.com/lucide@latest"></script>
-
   <link rel="stylesheet" href="/global.css" />
   <link rel="stylesheet" href="/dashboard.css" />
   <link rel="stylesheet" href="/auth.css"/>
+  <script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer>
+</script>
 </head>
-
 <body class="app-page">
+      <div id="error-toast" class="toast hidden">
+      <span class="toast-icon">❌</span>
+      <span class="toast-text"></span>
+    </div>
   <aside class="sidebar">
     <div class="sidebar-top">
       <div class="brand">
@@ -26,46 +32,35 @@
       </button>
       <div class="chat-list">
         <p class="sidebar-label">Chats recentes</p>
-
         <button class="chat-item active">
           <i data-lucide="message-square"></i>
           Primeiro chat
         </button>
-
         <button class="chat-item">
           <i data-lucide="message-square"></i>
           Nova conversa
         </button>
       </div>
     </div>
+<div class="sidebar-bottom">
+  <button class="side-action" id="settingsBtn">
+    <i data-lucide="settings"></i>
+    Configurações
+  </button>
 
-    <div class="sidebar-bottom">
-      <button class="side-action" id="themeToggle">
-        <i data-lucide="moon"></i>
-        Tema
-      </button>
+<div class="user-card">
+  <div class="user-avatar" id="userAvatar">U</div>
+  <div>
+    <strong id="sidebarUserName">Usuário</strong>
+    <span id="sidebarUserStatus">Online</span>
+  </div>
+</div>
 
-      <button class="side-action">
-        <i data-lucide="settings"></i>
-        Configurações
-      </button>
-
-      <div class="user-card">
-        <div class="user-avatar">
-          <i data-lucide="user"></i>
-        </div>
-
-        <div>
-          <strong>Usuário</strong>
-          <span id="userEmail">Logado</span>
-        </div>
-      </div>
-
-      <button class="logout-btn" id="logoutBtn">
-        <i data-lucide="log-out"></i>
-        Sair
-      </button>
-    </div>
+  <button class="logout-btn" id="logoutBtn">
+    <i data-lucide="log-out"></i>
+    Sair
+  </button>
+</div>
   </aside>
 
   <main class="chat-area">
@@ -75,32 +70,19 @@
 
     <div class="top-actions" id="topActions">
       <a href="#" class="login-link" id="openLoginModal">Entrar</a>
-      <a href="/register.html" class="register-btn">Cadastrar-se gratuitamente</a>
+      <a href="#" class="register-btn" id="openRegisterTop" >Cadastrar-se gratuitamente</a>
     </div>
 
-    <div class="user-menu hidden" id="userMenu">
-      <button class="profile-btn">
-        <i data-lucide="user"></i>
-        Minha conta
-      </button>
-
-      <button class="logout-btn-header" id="logoutBtnHeader">
-        Sair
-      </button>
-    </div>
   </header>
-
   <section class="messages-area" id="messages">
     <div class="welcome-box">
       <div class="welcome-icon">
         <i data-lucide="bot"></i>
       </div>
-
       <h2>Como posso ajudar hoje?</h2>
       <p>Digite sua pergunta abaixo para começar.</p>
     </div>
   </section>
-
   <form class="message-form" id="chatForm">
     <div class="message-input-box">
       <input
@@ -109,12 +91,10 @@
         placeholder="Digite sua mensagem..."
         autocomplete="off"
       />
-
       <button type="submit">
         <i data-lucide="send"></i>
       </button>
     </div>
-
     <p class="chat-warning">
       KKJ Intelligence utiliza modelos da OpenAI.
       Como toda IA, respostas imprecisas podem ocorrer.
@@ -123,25 +103,22 @@
   </form>
 </main>
 <!-- MODAL -->
-
 <div class="auth-modal hidden" id="authModal">
   <div class="auth-overlay"></div>
-
   <div class="auth-wrapper">
-
+    <div id="error-toast" class="toast hidden">
+      <span class="toast-icon">❌</span>
+      <span class="toast-text"></span>
+    </div>
     <section class="auth-container">
       <h2>Login</h2>
-
       <p class="auth-subtitle">
         Digite seu e-mail e senha para acessar sua conta
       </p>
-
       <form id="loginForm">
         <label for="email">E-mail</label>
-
         <div class="input-box">
           <i data-lucide="mail"></i>
-
           <input
             type="email"
             id="email"
@@ -150,12 +127,9 @@
             required
           />
         </div>
-
         <label for="password">Senha</label>
-
         <div class="input-box">
           <i data-lucide="lock"></i>
-
           <input
             type="password"
             id="password"
@@ -164,7 +138,6 @@
             minlength="6"
             required
           />
-
           <span
             class="toggle-password"
             onclick="togglePassword('password', this)"
@@ -172,12 +145,10 @@
             <i data-lucide="eye"></i>
           </span>
         </div>
-
         <div class="actions-row">
           <button type="submit" class="login-btn">
             Entrar
           </button>
-
           <a href="/api/auth/google" class="google-btn">
             <img
               src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -185,51 +156,478 @@
           </a>
         </div>
       </form>
-
-      <p class="auth-link">
-        AINDA NÃO TEM CONTA?
-        <a href="/register.html">CRIAR CONTA</a>
-      </p>
     </section>
+          <p class="auth-link">
+        AINDA NÃO TEM CONTA?
+        <a href="#"  class="registerr-btn"id="openRegisterModal">CRIAR CONTA</a>
+      </p>
   </div>
 </div>
+<div class="auth-modal hidden" id="registerModal">
+  <div class="auth-overlay" id="registerOverlay"></div>
+  <div class="auth-wrapper">
+    <section class="auth-container">
+      <h2>Cadastro</h2>
+      <p class="auth-subtitle">
+        Digite suas informações para criar sua conta
+      </p>
+      <form id="registerForm">
+        <label for="registerName">Nome</label>
+        <div class="input-box">
+          <i data-lucide="user"></i>
+          <input
+            type="text"
+            id="registerName"
+            name="name"
+            placeholder="Digite seu nome"
+            required
+          />
+        </div>
+        <label for="registerEmail">E-mail</label>
+        <div class="input-box">
+          <i data-lucide="mail"></i>
+          <input
+            type="email"
+            id="registerEmail"
+            name="email"
+            placeholder="Digite seu e-mail"
+            required
+          />
+        </div>
+        <label for="registerPassword">Senha</label>
+        <div class="input-box">
+          <i data-lucide="lock"></i>
+          <input
+            type="password"
+            id="registerPassword"
+            name="password"
+            placeholder="Digite sua senha"
+            minlength="6"
+            required
+          />
+          <span class="toggle-password" onclick="togglePassword('registerPassword', this)">
+            <i data-lucide="eye"></i>
+          </span>
+        </div>
+        <label for="confirmPassword">Confirmar senha</label>
+        <div class="input-box">
+          <i data-lucide="lock-keyhole"></i>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirme sua senha"
+            minlength="6"
+            required
+          />
+          <span class="toggle-password" onclick="togglePassword('confirmPassword', this)">
+            <i data-lucide="eye"></i>
+          </span>
+        </div>
+        <label class="terms-text">
+  Ao se cadastrar, você concorda com nossos <a href="/terms.html" target="_blank">Termos de Uso </a> 
+  e
+  <a href="/priv.html" target="_blank">
+    Política de Privacidade
+  </a>
+</label>
+      <div
+        class="cf-turnstile"
+        data-sitekey="0x4AAAAAADYj7x95ZiNrwAxl">
+      </div>
+        <div class="actions-row">
+          <button type="submit" class="login-btn">
+            Criar conta
+          </button>
+          <a href="/api/auth/google" class="google-btn">
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+            />
+          </a>
+        </div>
+      </form>
+    </section>
+          <p class="auth-link">
+        JÁ TEM CONTA?
+        <a href="#" id="goToLoginModal">ENTRAR</a>
+      </p>
+  </div>
+</div>
+<div class="logout-modal hidden" id="logoutModal">
+  <div class="logout-overlay"></div>
+
+  <div class="logout-box">
+    <h2>Tem certeza de que deseja sair?</h2>
+    <p>
+      Você será desconectado da KKJ Intelligence.
+    </p>
+    <button class="confirm-logout-btn" id="confirmLogoutBtn">
+      Sair
+    </button>
+    <button class="cancel-logout-btn" id="cancelLogoutBtn">
+      Cancelar
+    </button>
+  </div>
+</div>
+<div class="settings-modal hidden" id="settingsModal">
+  <div class="settings-overlay"></div>
+  <div class="settings-box">
+    <h2>Configurações</h2>
+    <div class="settings-section">
+      <h3>Aparência</h3>
+      <button class="setting-btn" id="darkThemeBtn">
+        🌙 Escuro
+      </button>
+      <button class="setting-btn" id="lightThemeBtn">
+        ☀️ Claro
+      </button>
+    </div>
+    <div class="settings-section">
+      <h3>Idioma</h3>
+      <button class="setting-btn">
+        🇧🇷 Português
+      </button>
+      <button class="setting-btn">
+        🇺🇸 English
+      </button>
+    </div>
+<!-- CONTA LOGADA -->
+<div class="settings-section" id="settingsAccountLogged">
+  <h3>Conta</h3>
+  <div class="settings-user">
+    <div class="user-avatar" id="settingsUserAvatar">U</div>
+    <div class="settings-user-info">
+      <strong id="settingsUserName">Usuário</strong>
+      <span>Conta conectada</span>
+    </div>
+  </div>
+  <button class="setting-btn danger" id="settingsLogoutBtn">
+    Sair da conta
+  </button>
+</div>
+<!-- CONTA DESLOGADA -->
+<div class="settings-section hidden" id="settingsAccountGuest">
+  <h3>Conta</h3>
+  <p class="settings-muted">
+    Entre ou crie uma conta para salvar seus chats e preferências.
+  </p>
+  <button class="setting-btn" id="settingsLoginBtn">
+    Entrar
+  </button>
+  <button class="setting-btn" id="settingsRegisterBtn">
+    Criar conta
+  </button>
+</div>
+  <button class="close-settings-btn" id="closeSettingsBtn">
+  Fechar
+</button>
 <script>
   lucide.createIcons();
+  /* =========================
+    LOGIN GOOGLE
+  ========================= */
+const params = new URLSearchParams(window.location.search);
+const googleToken = params.get("token");
+const googleUser = params.get("user");
+if (googleToken && googleUser) {
+  localStorage.setItem("token", googleToken);
+  localStorage.setItem("user", decodeURIComponent(googleUser));
+  window.history.replaceState({}, document.title, "/");
+}
+  /* =========================
+    ELEMENTOS
+  ========================= */
   const token = localStorage.getItem("token");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
   const topActions = document.getElementById("topActions");
-  const userMenu = document.getElementById("userMenu");
   const sidebarUser = document.querySelector(".user-card");
   const sidebarLogout = document.getElementById("logoutBtn");
+  const settingsAccountLogged =
+  document.getElementById("settingsAccountLogged");
+  const settingsAccountGuest =
+    document.getElementById("settingsAccountGuest");
+  const settingsLoginBtn =
+    document.getElementById("settingsLoginBtn");
+  const settingsRegisterBtn =
+    document.getElementById("settingsRegisterBtn");
+  if (token && storedUser) {
+  topActions.classList.add("hidden");
+  sidebarUser.style.display = "flex";
+  sidebarLogout.style.display = "flex";
+  settingsAccountLogged.classList.remove("hidden");
+  settingsAccountGuest.classList.add("hidden");
+  const name = storedUser.name || storedUser.email.split("@")[0];
+  const initials = name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+  document.getElementById("sidebarUserName").textContent = name;
+  document.getElementById("userAvatar").textContent = initials;
+  document.getElementById("settingsUserName").textContent = name;
+  document.getElementById("settingsUserAvatar").textContent = initials;
+} else {
+  topActions.classList.remove("hidden");
+  sidebarUser.style.display = "none";
+  sidebarLogout.style.display = "none";
+  settingsAccountLogged.classList.add("hidden");
+  settingsAccountGuest.classList.remove("hidden");
+}
   const authModal = document.getElementById("authModal");
-  const openLoginModal = document.getElementById("openLoginModal");
   const authOverlay = document.querySelector(".auth-overlay");
+  const openLoginModal = document.getElementById("openLoginModal");
+  const registerModal = document.getElementById("registerModal");
+  const registerOverlay = document.getElementById("registerOverlay");
+  const openRegisterModal =
+  document.getElementById("openRegisterModal");
+  const openRegisterTop =
+  document.getElementById("openRegisterTop");
+  const goToLoginModal = document.getElementById("goToLoginModal");
+  const loginForm = document.getElementById("loginForm");
+  const registerForm = document.getElementById("registerForm");
+  
+  
+  /* =========================
+    ESTADO DO USUÁRIO
+  ========================= */
   if (token) {
     topActions.classList.add("hidden");
-    userMenu.classList.remove("hidden");
   } else {
-    userMenu.classList.add("hidden");
     if (sidebarUser) sidebarUser.style.display = "none";
     if (sidebarLogout) sidebarLogout.style.display = "none";
   }
+  if (storedUser) {
+    const name = storedUser.name || storedUser.email.split("@")[0];
+    document.getElementById("sidebarUserName").textContent = name;
+    const initials = name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+    document.getElementById("userAvatar").textContent = initials;
+  }
+  /* =========================
+    FUNÇÕES GERAIS
+  ========================= */
   function logout() {
     localStorage.removeItem("token");
-    window.location.href = "/";
+    localStorage.removeItem("user");
+    window.location.reload();
   }
-  if (sidebarLogout) {
-    sidebarLogout.addEventListener("click", logout);
+  function togglePassword(inputId, element) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+      input.type = "text";
+      element.innerHTML = '<i data-lucide="eye-off"></i>';
+    } else {
+      input.type = "password";
+      element.innerHTML = '<i data-lucide="eye"></i>';
+    }
+    lucide.createIcons();
   }
-  const logoutBtnHeader = document.getElementById("logoutBtnHeader");
-  if (logoutBtnHeader) {
-    logoutBtnHeader.addEventListener("click", logout);
+  function showToast(message, success = true) {
+    const toast = document.getElementById("error-toast");
+    const text = toast.querySelector(".toast-text");
+    const icon = toast.querySelector(".toast-icon");
+    text.textContent = message;
+    icon.textContent = success ? "✅" : "❌";
+    toast.classList.remove("hidden");
+    setTimeout(() => {
+      toast.classList.add("hidden");
+    }, 3000);
   }
-openLoginModal.addEventListener("click", (e) => {
-  e.preventDefault();
-  authModal.classList.remove("hidden");
-  lucide.createIcons();
+  /* =========================
+    MODAIS
+  ========================= */
+  function openModal(modal) {
+    modal.classList.remove("hidden");
+    lucide.createIcons();
+  }
+  function closeModal(modal) {
+    modal.classList.add("hidden");
+  }
+  if (openLoginModal) {
+    openLoginModal.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal(authModal);
+    });
+  }
+  if (authOverlay) 
+    authOverlay.addEventListener("click", () => {
+      closeModal(authModal);
+    });
+if (openRegisterModal) {
+  openRegisterModal.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal(authModal);
+    openModal(registerModal);
+  });
+}
+if (openRegisterTop) {
+  openRegisterTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    openModal(registerModal);
+  });
+}
+  if (registerOverlay) {
+    registerOverlay.addEventListener("click", () => {
+      closeModal(registerModal);
+    });
+  }
+  if (goToLoginModal) {
+    goToLoginModal.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeModal(registerModal);
+      openModal(authModal);
+    });
+  }
+
+  /* =========================
+    LOGOUT
+  ========================= */
+const logoutModal = document.getElementById("logoutModal");
+const confirmLogoutBtn = document.getElementById("confirmLogoutBtn");
+const cancelLogoutBtn = document.getElementById("cancelLogoutBtn");
+
+if (sidebarLogout) {
+  sidebarLogout.addEventListener("click", () => {
+    logoutModal.classList.remove("hidden");
+  });
+}
+confirmLogoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.reload();
 });
-authOverlay.addEventListener("click", () => {
-  authModal.classList.add("hidden");
+cancelLogoutBtn.addEventListener("click", () => {
+  logoutModal.classList.add("hidden");
 });
+const settingsLogoutBtn =
+  document.getElementById("settingsLogoutBtn");
+
+if (settingsLogoutBtn) {
+  settingsLogoutBtn.addEventListener("click", () => {
+    settingsModal.classList.add("hidden");
+    logoutModal.classList.remove("hidden");
+  });
+}
+  /* =========================
+    LOGIN
+  ========================= */
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (!data.success) {
+          showToast(data.message, false);
+          return;
+        }
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        showToast("Login realizado com sucesso", true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (err) {
+        showToast("Erro interno do servidor", false);
+      }
+    });
+  }
+/* =========================
+  CADASTRO
+========================= */
+if (registerForm) {
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("registerName").value;
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    if (password !== confirmPassword) {
+      showToast("As senhas não coincidem", false);
+      return;
+    }
+      const turnstileToken =
+    document.querySelector(
+      '[name="cf-turnstile-response"]'
+    )?.value;
+  if (!turnstileToken) {
+    showToast(
+      "Confirme que você é humano",
+      false
+    );
+    return;
+  }
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          turnstileToken,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) {
+        showToast(data.message, false);
+        return;
+      }
+      showToast("Conta criada com sucesso", true);
+      setTimeout(() => {
+        registerModal.classList.add("hidden");
+        authModal.classList.remove("hidden");
+        lucide.createIcons();
+      }, 1000);
+    } catch (err) {
+      showToast("Erro interno do servidor", false);
+    }
+  });
+}
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    authModal.classList.add("hidden");
+    registerModal.classList.add("hidden");
+  }
+});
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsModal = document.getElementById("settingsModal");
+const closeSettingsBtn = document.getElementById("closeSettingsBtn");
+const settingsOverlay = document.querySelector(".settings-overlay");
+
+if (settingsBtn && settingsModal) {
+  settingsBtn.addEventListener("click", () => {
+    settingsModal.classList.remove("hidden");
+  });
+}
+
+if (closeSettingsBtn && settingsModal) {
+  closeSettingsBtn.addEventListener("click", () => {
+    settingsModal.classList.add("hidden");
+  });
+}
+
+if (settingsOverlay && settingsModal) {
+  settingsOverlay.addEventListener("click", () => {
+    settingsModal.classList.add("hidden");
+  });
+}
 </script>
 </body>
 </html>
