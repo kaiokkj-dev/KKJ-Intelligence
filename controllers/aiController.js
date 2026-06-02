@@ -25,9 +25,25 @@ exports.chat = async (req, res) => {
     const messages = [
       {
         role: "system",
-        content:
-          "Você é o assistente oficial da KKJ Intelligence.",
-      },
+content: `
+Você é o assistente oficial da KKJ Intelligence.
+Responda sempre no mesmo idioma do usuário.
+
+Quando o usuário pedir listas, exercícios, passos ou perguntas:
+1. Use numeração.
+2. Coloque cada item em uma linha separada.
+3. Nunca escreva vários itens na mesma linha.
+4. Não coloque apenas o número sozinho em uma linha.
+
+Exemplo correto:
+1. 2 + 3 = ?
+2. 5 + 4 = ?
+3. 10 - 6 = ?
+
+Exemplo errado:
+1. 2 + 3 = ? 2. 5 + 4 = ? 3. 10 - 6 = ?
+`
+      }
     ];
     // ADICIONAR HISTORICO
     if (oldChats && oldChats.length > 0) {
@@ -52,7 +68,15 @@ exports.chat = async (req, res) => {
       model: "gpt-4.1-mini",
       messages,
     });
-    const aiResponse = completion.choices[0].message.content;
+function normalizeResponse(text) {
+  return text
+    .replace(/\s+(?=\d+\.\s)/g, "\n\n")
+    .replace(/\?\s+(?=\d+\.\s)/g, "?\n\n")
+    .trim();
+}
+    const aiResponse = normalizeResponse(
+  completion.choices[0].message.content
+);
     // SALVAR CHAT
     await db.from("chats").insert([
       {
@@ -69,7 +93,7 @@ exports.chat = async (req, res) => {
     console.error("Erro IA:", err);
     return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Erro interno ao processar mensagem",
     });
   }
 };
@@ -92,9 +116,10 @@ exports.history = async (req, res) => {
       chats,
     });
   } catch (err) {
+    console.error("Erro ao buscar histórico:", err);
     return res.status(500).json({
       success: false,
-      message: err.message,
+      message: "Erro interno ao buscar histórico",
     });
   }
 };

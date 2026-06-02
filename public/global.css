@@ -17,6 +17,24 @@ ROOT
   --radius-md: 4px;
   --transition: 0.3s ease;
 }
+body.light-theme {
+  --bg-main: #edf7f2;
+  --bg-card: #f8fffb;
+  --bg-input: #dff0e7;
+  --bg-hover: rgba(0, 217, 119, 0.08);
+  --primary: #00d977;
+  --primary-dark: #00b463;
+  --danger: #f51d45;
+  --text-main: #17352a;
+  --text-muted: #5f7d70;
+  --text-dark: #081b14;
+  --border: rgba(0, 155, 90, 0.15);
+  --border-active: rgba(0, 217, 119, 0.35);
+  --shadow: rgba(0, 120, 70, 0.08);
+  --shadow-strong: rgba(0, 120, 70, 0.15);
+  --glass: rgba(248, 255, 251, 0.85);
+  --glass-dark: rgba(223, 240, 231, 0.65);
+}
 /* =========================
 RESET
 ========================= */
@@ -61,7 +79,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
   -webkit-box-shadow:
     0 0 0px 1000px rgba(0, 255, 136, 0.01) inset;
-  -webkit-text-fill-color: white;
+  -webkit-text-fill-color: rgb(0, 0, 0);
   transition:
     background-color 5000s ease-in-out 0s;
 }
@@ -69,4 +87,124 @@ input:-webkit-autofill:focus {
   display: flex;
   justify-content: center;
   margin: 18px 0;
+}
+/* =========================
+LIGHT
+========================= */
+body.light-theme.app-page {
+  background:
+    radial-gradient(circle at top, var(--bg-hover), transparent 35%),
+    linear-gradient(135deg, var(--bg-main), var(--bg-main));
+}
+
+body.light-theme .sidebar {
+  background: var(--bg-card);
+}
+
+body.light-theme .side-action,
+body.light-theme .user-card,
+body.light-theme .setting-btn,
+body.light-theme .cancel-logout-btn {
+  background: var(--bg-input);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+body.light-theme .chat-item:hover,
+body.light-theme .side-action:hover,
+body.light-theme .login-link:hover,
+body.light-theme .register-btn:hover {
+  background: var(--bg-hover);
+}
+
+body.light-theme .chat-item.active {
+  background: var(--bg-hover);
+  border-color: var(--border-active);
+  color: var(--primary);
+}
+
+body.light-theme .welcome-box h2 {
+  color: var(--text-main);
+}
+
+body.light-theme .welcome-box p {
+  color: var(--text-muted);
+}
+
+body.light-theme .message-form {
+  background: linear-gradient(
+    to top,
+    var(--bg-main) 70%,
+    transparent
+  );
+}
+
+body.light-theme .message-input-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 0 25px var(--shadow),
+    0 10px 30px var(--shadow-strong);
+}
+
+body.light-theme .message-input-box input {
+  color: var(--text-main);
+}
+
+body.light-theme .message-input-box input::placeholder {
+  color: var(--text-muted);
+}
+
+body.light-theme .input-box {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+}
+
+body.light-theme .input-box input {
+  color: var(--text-main);
+}
+
+body.light-theme .input-box input::placeholder {
+  color: var(--text-muted);
+}
+
+body.light-theme .logout-box,
+body.light-theme .settings-box,
+body.light-theme .auth-container {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+body.light-theme .settings-overlay,
+body.light-theme .logout-overlay,
+body.light-theme .auth-overlay {
+  background: rgba(255,255,255,.45);
+}
+
+body.light-theme .setting-btn {
+  color: var(--text-main);
+}
+
+body.light-theme .setting-btn.danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+body.light-theme .chat-warning,
+body.light-theme .sidebar-label,
+body.light-theme .settings-user-info span,
+body.light-theme .auth-subtitle {
+  color: var(--text-muted);
+}
+
+body.light-theme .lucide {
+  stroke: var(--text-main);
+}
+
+body.light-theme .toast {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border);
 }

@@ -1,11 +1,12 @@
 /* APP */
 .app-page {
-  min-height: 100vh;
+
   display: flex;
   background:
     radial-gradient(circle at top, rgba(0, 255, 136, 0.08), transparent 35%),
     linear-gradient(135deg, #020f0b, #03150f);
   color: var(--text-main);
+  height: 100vh; /* ocupa toda a altura da janela */
 }
 
 /* SIDEBAR */
@@ -194,13 +195,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 5px;
 
   border: none;
   border-radius: var(--radius-md);
 
-  background: rgba(255, 77, 122, 0.08);
-  color: #ff4d7a;
+  background: rgba(248, 63, 109, 0.192);
+  color: #ff2e62bd;
 
   cursor: pointer;
   transition: var(--transition);
@@ -271,7 +272,7 @@
 
 .logout-btn-header {
   color: #ff4d7a;
-  border-color: rgba(255, 77, 122, 0.3);
+  border-color: rgba(255, 77, 122, 0.103);
 }
 
 /* MESSAGES */
@@ -576,16 +577,11 @@
 .settings-box {
   position: relative;
   z-index: 2;
-
   width: 100%;
   max-width: 450px;
-
   padding: 30px;
-
   border-radius: 18px;
-
   background: #081b14;
-
   border: 1px solid var(--border);
 }
 
@@ -600,7 +596,6 @@
 .settings-section h3 {
   margin-bottom: 10px;
 }
-
 .setting-btn {
   width: 100%;
   margin-bottom: 10px;
@@ -611,27 +606,187 @@
   color: white;
   cursor: pointer;
 }
-
 .setting-btn:hover {
   border-color: var(--primary);
 }
-
 .close-settings-btn {
   width: 100%;
-
   padding: 14px;
-
   border: none;
-
   border-radius: 12px;
-
   background: var(--primary);
-
   color: #02130c;
-
   font-weight: 700;
-
   cursor: pointer;
+}
+.logo {
+  width: 70px;
+  height: auto;
+}
+.settings-muted {
+  margin-bottom: 16px;
+
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+
+  text-align: center;
+}
+
+#settingsAccountGuest {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+#settingsAccountGuest h3 {
+  margin-bottom: 12px;
+}
+
+#settingsAccountGuest .setting-btn {
+  margin-bottom: 10px;
+}
+
+#settingsLoginBtn {
+  background: var(--primary);
+  color: #02130c;
+  font-weight: 700;
+  border: none;
+}
+
+#settingsLoginBtn:hover {
+  background: var(--primary-dark);
+}
+
+#settingsRegisterBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+}
+
+#settingsRegisterBtn:hover {
+  border-color: var(--primary);
+}
+.setting-btn.active-language {
+  background: rgba(0, 217, 119, 0.12);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.messages-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 24px 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chat-message {
+  width: fit-content;
+  max-width: 560px;
+  min-width: 0;
+  margin: 5px 0;
+}
+
+.message-bubble {
+  padding: 10px 14px;
+  border-radius: 14px;
+  line-height: 1.5;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+}
+
+.chat-message.user .message-bubble {
+  background: #111;
+  color: #fff;
+  border: 1px solid #1f3f33;
+}
+
+.chat-message.assistant {
+  align-self: flex-start;
+}
+
+.chat-message.assistant .message-bubble {
+  background: #00ff88;
+  color: #001b10;
+}
+
+.message-content {
+  min-width: 0;
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.chat-message.user .message-meta {
+  justify-content: flex-end;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.chat-message.assistant .message-meta {
+  color: rgba(240, 255, 248, 0.48);
+}
+
+.chat-message.user .copy-message-btn {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.chat-message.user .copy-message-btn:hover,
+.chat-message.user .copy-message-btn.copied {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.copy-message-btn {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(240, 255, 248, 0.55);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.copy-message-btn:hover,
+.copy-message-btn.copied {
+  background: rgba(240, 255, 248, 0.08);
+  color: rgba(240, 255, 248, 0.9);
+}
+
+.copy-message-btn .lucide {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  stroke: rgba(240, 255, 248, 0.55);
+  stroke-width: 2;
+}
+
+.copy-message-btn:hover .lucide,
+.copy-message-btn.copied .lucide {
+  stroke: rgba(240, 255, 248, 0.9);
+}
+
+.chat-message.user .copy-message-btn .lucide {
+  stroke: rgba(255, 255, 255, 0.5);
+}
+
+.chat-message.user .copy-message-btn:hover .lucide,
+.chat-message.user .copy-message-btn.copied .lucide {
+  stroke: #ffffff;
 }
 /* GLOBAL HELPERS */
 .hidden {

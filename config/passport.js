@@ -11,27 +11,23 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails?.[0]?.value;
+        const email = profile.emails?.[0]?.value?.trim().toLowerCase();
         const name = profile.displayName;
 
         if (!email) {
           return done(new Error("Email do Google não encontrado"));
         }
-
         const { data: existingUser, error: findError } = await db
           .from("users")
           .select("*")
           .eq("email", email)
           .maybeSingle();
-
         if (findError) {
           return done(findError);
         }
-
         if (existingUser) {
           return done(null, existingUser);
         }
-
         const { data: newUser, error: insertError } = await db
           .from("users")
           .insert([
@@ -43,11 +39,9 @@ passport.use(
           ])
           .select()
           .single();
-
         if (insertError) {
           return done(insertError);
         }
-
         return done(null, newUser);
       } catch (err) {
         return done(err);
@@ -55,11 +49,9 @@ passport.use(
     }
   )
 );
-
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
-
 passport.deserializeUser(async (id, done) => {
   try {
     const { data: user, error } = await db
@@ -67,11 +59,9 @@ passport.deserializeUser(async (id, done) => {
       .select("*")
       .eq("id", id)
       .single();
-
     if (error) {
       return done(error);
     }
-
     return done(null, user);
   } catch (err) {
     return done(err);

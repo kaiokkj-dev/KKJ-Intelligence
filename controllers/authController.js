@@ -1,6 +1,11 @@
 const db = require("../database/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {
+  checkFailedLoginLimit,
+  recordFailedLogin,
+  clearFailedLogins,
+} = require("../middlewares/rateLimitMiddleware");
 
 // LOGIN
 exports.login = async (req, res) => {
@@ -11,25 +16,48 @@ exports.login = async (req, res) => {
       message: "Preencha email e senha",
     });
   }
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const loginLimit = checkFailedLoginLimit(req, normalizedEmail);
+  if (loginLimit) {
+    res.set("Retry-After", String(loginLimit.retryAfter));
+    return res.status(429).json({
+      success: false,
+      message: loginLimit.message,
+    });
+  }
+
   try {
     const { data: user, error } = await db
       .from("users")
       .select("*")
-      .eq("email", email)
+      .eq("email", normalizedEmail)
       .single();
     if (error || !user) {
+      recordFailedLogin(req, normalizedEmail);
       return res.status(401).json({
         success: false,
         message: "Email ou senha inválidos",
       });
     }
+    if (!user.password) {
+      return res.status(401).json({
+        success: false,
+        message: "Esta conta foi criada com Google. Use o botão do Google para entrar.",
+      });
+    }
+
     const senhaCorreta = await bcrypt.compare(password, user.password);
     if (!senhaCorreta) {
+      recordFailedLogin(req, normalizedEmail);
       return res.status(401).json({
         success: false,
         message: "Email ou senha inválidos",
       });
     }
+
+    clearFailedLogins(req, normalizedEmail);
+
     const token = jwt.sign(
       {
         id: user.id,
@@ -51,6 +79,7 @@ exports.login = async (req, res) => {
       },
     });
   } catch (err) {
+    recordFailedLogin(req, normalizedEmail);
     console.error("Erro no login:", err.message);
     return res.status(500).json({
       success: false,
@@ -67,6 +96,7 @@ exports.register = async (req, res) => {
       message: "Preencha todos os campos",
     });
   }
+  const normalizedEmail = email.trim().toLowerCase();
   if (!turnstileToken) {
     return res.status(400).json({
       success: false,
@@ -106,7 +136,7 @@ exports.register = async (req, res) => {
       .insert([
         {
           name,
-          email,
+          email: normalizedEmail,
           password: hash,
         },
       ])
