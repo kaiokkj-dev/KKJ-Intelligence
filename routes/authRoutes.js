@@ -45,7 +45,7 @@ router.get(
       })
     );
 
-    res.redirect(`/?token=${token}&user=${user}`);
+    res.redirect(`/#token=${token}&user=${user}`);
   }
 );
 

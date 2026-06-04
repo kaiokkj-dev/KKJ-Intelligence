@@ -110,6 +110,7 @@ body.light-theme .cancel-logout-btn {
   border-color: var(--border);
 }
 
+body.light-theme .chat-item-row:hover,
 body.light-theme .chat-item:hover,
 body.light-theme .side-action:hover,
 body.light-theme .login-link:hover,
@@ -117,9 +118,14 @@ body.light-theme .register-btn:hover {
   background: var(--bg-hover);
 }
 
+body.light-theme .chat-item-row.active,
 body.light-theme .chat-item.active {
   background: var(--bg-hover);
   border-color: var(--border-active);
+  color: var(--primary);
+}
+
+body.light-theme .chat-item-row.active .chat-item {
   color: var(--primary);
 }
 
@@ -200,6 +206,36 @@ body.light-theme .auth-subtitle {
 }
 
 body.light-theme .lucide {
+  stroke: var(--text-main);
+}
+
+body.light-theme .chat-message.user .message-meta,
+body.light-theme .chat-message.assistant .message-meta {
+  color: rgba(23, 53, 42, 0.62);
+}
+
+body.light-theme .copy-message-btn,
+body.light-theme .chat-message.user .copy-message-btn {
+  color: rgba(23, 53, 42, 0.62);
+}
+
+body.light-theme .copy-message-btn:hover,
+body.light-theme .copy-message-btn.copied,
+body.light-theme .chat-message.user .copy-message-btn:hover,
+body.light-theme .chat-message.user .copy-message-btn.copied {
+  background: rgba(0, 120, 70, 0.08);
+  color: var(--text-main);
+}
+
+body.light-theme .copy-message-btn .lucide,
+body.light-theme .chat-message.user .copy-message-btn .lucide {
+  stroke: rgba(23, 53, 42, 0.62);
+}
+
+body.light-theme .copy-message-btn:hover .lucide,
+body.light-theme .copy-message-btn.copied .lucide,
+body.light-theme .chat-message.user .copy-message-btn:hover .lucide,
+body.light-theme .chat-message.user .copy-message-btn.copied .lucide {
   stroke: var(--text-main);
 }
 

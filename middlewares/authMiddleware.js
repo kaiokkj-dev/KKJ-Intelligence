@@ -20,3 +20,20 @@ exports.protect = (req, res, next) => {
     });
   }
 };
+
+exports.optionalAuth = (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      req.user = null;
+      return next();
+    }
+
+    const token = authHeader.split(" ")[1];
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    return next();
+  } catch (err) {
+    req.user = null;
+    return next();
+  }
+};
