@@ -66,7 +66,6 @@ app.use(
 );
 
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
@@ -86,3 +85,6 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+// EXPORTA PARA A VERCEL
+module.exports = app;
