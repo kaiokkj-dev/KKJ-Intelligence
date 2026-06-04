@@ -227,6 +227,11 @@ body.light-theme .chat-message.user .copy-message-btn.copied {
   color: var(--text-main);
 }
 
+html,
+body.app-page {
+  min-height: 100dvh;
+}
+
 body.light-theme .copy-message-btn .lucide,
 body.light-theme .chat-message.user .copy-message-btn .lucide {
   stroke: rgba(23, 53, 42, 0.62);

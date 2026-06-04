@@ -19,6 +19,14 @@
 }
 
 @media (max-width: 768px) {
+  html,
+  body,
+  body.app-page {
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
   body.is-authenticated .top-header {
     display: flex !important;
   }
@@ -67,6 +75,8 @@
     left: 0;
     z-index: 9998;
     width: min(82vw, 300px);
+    height: 100dvh;
+    min-height: 100dvh;
     transform: translateX(-100%);
     transition: transform 0.28s ease;
   }
@@ -76,8 +86,13 @@
   }
 
   .top-header {
+    flex-shrink: 0;
     padding: 0 14px;
     gap: 12px;
+  }
+
+  .chat-area {
+    min-height: 100dvh;
   }
 
   .page-title {
@@ -95,6 +110,8 @@
   }
 
   .messages-area {
+    flex: 1;
+    min-height: 0;
     padding: 22px 14px 132px;
   }
 
@@ -136,6 +153,10 @@
 
   .message-bubble {
     max-width: 88%;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
   }
 
   .auth-modal .auth-wrapper {

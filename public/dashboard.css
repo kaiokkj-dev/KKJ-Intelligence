@@ -4,6 +4,8 @@ LAYOUT GERAL
 .app-page {
   display: flex;
   height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
   background:
     radial-gradient(circle at top, rgba(0, 255, 136, 0.08), transparent 35%),
     linear-gradient(135deg, #020f0b, #03150f);
@@ -12,8 +14,11 @@ LAYOUT GERAL
 
 .chat-area {
   flex: 1;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .hidden {
@@ -26,10 +31,12 @@ SIDEBAR
 .sidebar {
   width: 290px;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow-y: auto;
   background: rgba(6, 26, 18, 0.88);
   border-right: 1px solid var(--border);
   backdrop-filter: blur(12px);
@@ -338,10 +345,12 @@ HEADER SUPERIOR
 ========================= */
 .messages-area {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 40px 24px 160px;
 }
 
