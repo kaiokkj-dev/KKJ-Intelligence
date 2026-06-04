@@ -164,9 +164,11 @@
   }
 
   .auth-modal .auth-container {
-    max-width: 100%;
+    width: min(100%, 380px);
+    max-width: min(100%, 380px);
     max-height: calc(100dvh - 20px);
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 18px 14px;
     border-radius: 16px;
   }
@@ -177,9 +179,7 @@
   }
 
   .auth-subtitle {
-    margin-bottom: 10px;
-    font-size: 12px;
-    line-height: 1.25;
+    display: none;
   }
 
   form label {
@@ -191,9 +191,11 @@
     height: 38px;
     margin-bottom: 8px;
     padding: 0 8px;
+    min-width: 0;
   }
 
   .input-box input {
+    min-width: 0;
     font-size: 12px;
   }
 
@@ -218,11 +220,17 @@
   .actions-row {
     margin-top: 4px;
     gap: 8px;
+    align-items: stretch;
   }
 
   .login-btn,
   .google-btn {
     height: 40px;
+  }
+
+  .login-btn {
+    min-width: 0;
+    font-size: 14px;
   }
 
   .google-btn {
@@ -236,9 +244,12 @@
   }
 
   .cf-turnstile {
-    transform: scale(0.88);
-    transform-origin: left center;
-    margin: 10px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    transform: scale(0.82);
+    transform-origin: center center;
+    margin: 8px 0;
   }
 
   .auth-link {
@@ -388,6 +399,8 @@
   }
 
   .auth-modal .auth-container {
+    width: min(100%, 340px);
+    max-width: min(100%, 340px);
     max-height: calc(100dvh - 16px);
     padding: 14px 12px;
     border-radius: 8px;
@@ -399,8 +412,7 @@
   }
 
   .auth-subtitle {
-    margin-bottom: 8px;
-    font-size: 11px;
+    display: none;
   }
 
   .input-box {
@@ -435,12 +447,16 @@
     height: 38px;
   }
 
+  .login-btn {
+    font-size: 13px;
+  }
+
   .google-btn {
     width: 40px;
   }
 
   .cf-turnstile {
-    transform: scale(0.82);
+    transform: scale(0.74);
     margin: 8px 0;
   }
 
