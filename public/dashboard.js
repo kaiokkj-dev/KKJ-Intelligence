@@ -73,7 +73,6 @@ FUNÇÕES GERAIS
 function openModal(modal) {
   if (!modal) return;
   modal.classList.remove("hidden");
-  lucide.createIcons();
 }
 
 function closeModal(modal) {

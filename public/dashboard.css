@@ -658,7 +658,6 @@ MODAL DE AUTENTICAÇÃO
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(6px);
 }
 
 .auth-modal .auth-wrapper {
@@ -674,6 +673,7 @@ MODAL DE AUTENTICAÇÃO
 
 .auth-modal .auth-container {
   max-width: 470px;
+  backdrop-filter: blur(6px);
 }
 
 /* =========================
@@ -705,7 +705,7 @@ MODAL DE LOGOUT
   width: 100%;
   max-width: 400px;
   padding: 34px;
-  background: #081b14;
+  backdrop-filter: blur(6px);
   border: 1px solid var(--border);
   border-radius: 18px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
@@ -895,5 +895,3 @@ MODAL DE CONFIGURAÇÕES
 #settingsRegisterBtn:hover {
   border-color: var(--primary);
 }
-
-
